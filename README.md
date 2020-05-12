@@ -1,9 +1,3 @@
-<style type="text/css">
-body, td {font-size: 14px;}
-code.r{font-size: 14px;}
-pre {font-size: 12px}
-</style>
-
 # CMAQ installation guide
 Purpose: This guide describes how to install and run the CMAQ test case. All the information in this guide is based on the original CMAQ 5.3.1 [Users Guide Installation and Benchmarking tutorial][1] and the information found in different community forums.
 
