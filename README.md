@@ -118,16 +118,16 @@ In order to make a more organized installation, its recommended to create a base
 ## V. Instal netCDF-C
 1. Download and untar the netcdf-c-4.7.2 folder. The link must vary if you decide to use another version of netCDF-C:
     ```
-    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-4.7.2.tar.gz
-    gunzip -c netcdf-c-4.7.2.tar.gz | tar xf
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-4.7.0.tar.gz
+    tar -xzvf netcdf-c-4.7.0.tar.gz
     ```
 2. Enter the main folder:
     ```
-    cd netcdf-c-4.7.2
+    cd netcdf-c-4.7.0
     ```
 3. Make the netCDF-C instalation directory:
     ```
-    mkdir ${BASEDIR}/netcdf-c-4.7.2-intel19.1
+    mkdir ${BASEDIR}/netcdf-c-4.0.2-intel19.1
     ```
 4. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
     ```
@@ -158,16 +158,16 @@ In order to make a more organized installation, its recommended to create a base
 ## VI. Install netCDF-Fortran
 1. Download and untar the netcdf-fortran-4.5.2 folder. The link must vary if you decide to use another version of netCDF-Fortran:
     ```
-    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.5.2.tar.gz 
-    tar -xzvf netcdf-fortran-4.5.2.tar.gz
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.4.5.tar.gz 
+    tar -xzvf netcdf-fortran-4.4.5.tar.gz
     ```
 2. Enter the main folder:
     ```
-    cd netcdf-fortran-4.5.2
+    cd netcdf-fortran-4.4.5
     ```
 3. Make the netCDF-C instalation directory:
     ```
-    mkdir ${BASEDIR}/netcdf-fortran-4.5.2-intel19.1
+    mkdir ${BASEDIR}/netcdf-fortran-4.4.5-intel19.1
     ```
 4. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
     ```
@@ -180,9 +180,9 @@ In order to make a more organized installation, its recommended to create a base
     ```
 5. Set the netCDF-C directory, LD_LIBRARY_PATH, NFDIR, CPPFLAGS and LDFLAGS variables:
     ```
-    export NCDIR=${BASEDIR}/netcdf-c-4.7.2-intel19.1
+    export NCDIR=${BASEDIR}/netcdf-c-4.7.0-intel19.1
     export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}
-    export NFDIR=${BASEDIR}/netcdf-fortran-4.5.2-intel19.1
+    export NFDIR=${BASEDIR}/netcdf-fortran-4.4.5-intel19.1
     export CPPFLAGS=-I${NCDIR}/include
     export LDFLAGS=-L${NCDIR}/lib
     ```
@@ -224,7 +224,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
 9. Set LD_LIBRARY_PATH variable to include the netcdf-Fortran library path for netCDF build. May need to add the NCDIR and NFDIR to .cshrc:
     ```
-    export NFDIR=${BASEDIR}/netcdf-fortran-4.4.5-intel18.2
+    export NFDIR=${BASEDIR}/netcdf-fortran-4.4.5-intel19.1
     export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
     ```
 10. Return to the LIBRARIES directory
@@ -251,8 +251,8 @@ In order to make a more organized installation, its recommended to create a base
     ```
     - Use this values. **[BASEDIR]** is the same location saved on $BASEDIR:
         ```
-        BIN = Linux2_x86_64ifort_openmpi_4.0.2_intel19.1
-        BASEDIR = [BASEDIR]
+        BIN = Linux2_x86_64ifort_intel19.1
+        BASEDIR = /[BASEDIR]
         NCFLIBS = -lnetcdff -lnetcdf
         ```
 5. Enter the ioapi folder:
@@ -261,11 +261,11 @@ In order to make a more organized installation, its recommended to create a base
     ```
 6. Create a personalized Makeinclude file from template:
     ```
-    cp Makeinclude.Linux2_x86_64ifort Makeinclude.Linux2_x86_64ifort_openmpi_4.0.2_intel19.1
+    cp Makeinclude.Linux2_x86_64ifort Makeinclude.Linux2_x86_64ifort_intel19.1
     ```
 7. Edit the Makeinclude file:
     ```
-    vi Makeinclude.Linux2_x86_64ifort_openmpi_4.0.2_intel19.1
+    vi Makeinclude.Linux2_x86_64ifort_intel19.1
     ```
     - Use this values: ###############################
         ```
@@ -290,7 +290,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
  - **[BASEDIR]** is the same location saved on $BASEDIR:
     ```
-    BASEDIR = [BASEDIR] 
+    BASEDIR = /[BASEDIR] 
     ```
 10. Enter the m3tools folder:
     ```
@@ -307,7 +307,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
     - **[BASEDIR]** is the same location saved on $BASEDIR:
         ```
-        BASEDIR = [BASEDIR]
+        BASEDIR = /[BASEDIR]
         ```
 13. Return to ioapi-3.2 folder:
     ```
@@ -315,7 +315,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
 14. Set the BIN variable as:
     ```
-    export BIN=Linux2_x86_64ifort_openmpi_4.0.2_intel19.1
+    export BIN=Linux2_x86_64ifort_intel19.1
     ```
 15. Create the BIN directory. (This will be the location of the I/O API library)
     ```
@@ -324,8 +324,8 @@ In order to make a more organized installation, its recommended to create a base
     ```
 16. Link the netCDF-C and netCDF-Fortran libraries archives:
     ```
-    ln -s ${BASEDIR}/netcdf-c-4.7.2-intel19.1/lib/libnetcdf.a
-    ln -s ${BASEDIR}/netcdf-fortran-4.5.2-intel19.1/lib/libnetcdff.a
+    ln -s ${BASEDIR}/netcdf-c-4.7.0-intel19.1/lib/libnetcdf.a
+    ln -s ${BASEDIR}/netcdf-fortran-4.4.5-intel19.1/lib/libnetcdff.a
     ```
 18. Return to ioapi-3.2 folder:
     ``` 
