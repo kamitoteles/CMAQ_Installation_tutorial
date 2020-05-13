@@ -408,7 +408,13 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     ./config_cmaq.csh intel
     ```
-7. Download the 2 day Benchmark data Input and Output folders found [here][2] and untar them on the ${CMAQ_HOME}/data directory.
+7. Download the 2 day Benchmark data Input and Output folders found [here][2] and untar them on the ${CMAQ_HOME}/data directory. The code below assumes that your download destination was the /home/[user]/Downloads
+    ```
+    cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz /home/camilo/CMAQ-5.3.1/data
+    cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Output.tar.gz /home/camilo/CMAQ-5.3.1/data
+    tar xvzf CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz
+    tar xvzf CMAQv5.3.1_Benchmark_2Day_Output.tar.gz
+    ```
 8. Enter the CCTM scrips folder:
     ```
     cd CCTM/scripts
@@ -430,9 +436,19 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
         - Aerosol module: AERO7
         - Cloud module: ACM_AE7
 10. Build the CCTM script and create the executable:
-```
-./bldit_cctm.csh intel |& tee bldit.cctm.log
-```
-
+    ```
+    ./bldit_cctm.csh intel |& tee bldit.cctm.log
+    ```
+11. Check if the .EXE file was created:
+    ```
+    ls -al BLD_CCTM_v531_intel/CCTM_v531.exe
+    ```
+12. Edit de CCTM run script depending on the number of precessor that you will use:
+    ```
+    vi run_cctm_Bench_2016_12SE1.csh
+    ```
+    - This conditiosn must be set whith Y:
+        ```
+        setenv CTM_BIDI_FERT_NH3 Y
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
 [2]: https://drive.google.com/drive/folders/10wFNch1MkI49ZjD2XD6wK2xzDWOav2zY
