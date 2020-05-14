@@ -1,4 +1,4 @@
-# CMAQ installation guide holi
+# CMAQ installation guide
 Purpose: This guide describes how to install and run the CMAQ test case. All the information in this guide is based on the original CMAQ 5.3.1 [Users Guide Installation and Benchmarking tutorial][1] and the information found in different community forums.
 
 This set of instructions were tested on a Linux system with the following specifications: 
