@@ -39,13 +39,7 @@ These libraries will be needed to assure some functionalities of the code. If yo
     apt-get -y install gfortran
     ```
 ---
-## II. Set intel compliers
-1. Download the Intel® Parallel Studio XE package and use the 'install. sh' or 'install_gui.sh' script depending on your installation preferences.
-    ```
-    sh install_gui.sh
-    ```
----
-## III. Make Base Directory
+## II. Make Base Directory
 In order to make a more organized installation, its recommended to create a base directory where all the libraries and repositores will be downloaded and installed. This step is completelly optional.
 
 1. Make the home directory for all the installation in the desired location:
@@ -57,10 +51,30 @@ In order to make a more organized installation, its recommended to create a base
     cd CMAQ-5.3.1
     mkdir LIBRARIES
     ```
-3. Enter into LIBRARIES and make it your base directory with the $BASEDIR variable. Replace **[initial_dir]** with the location where the home directory is located:
+3. Enter into LIBRARIES and make it your base directory with the $CMAQ_LIBRARIES variable. Replace **[initial_dir]** with the location where the home directory is located:
     ```
     cd LIBRARIES
-    export BASEDIR=/[initial_dir]/CMAQ-5.3.1/LIBRARIES
+    export CMAQ_LIBRARIES=/[initial_dir]/CMAQ-5.3.1/LIBRARIES
+    ```
+---
+## III. Set intel compliers
+1. Download the Intel® Parallel Studio XE package and use the 'install. sh' or 'install_gui.sh' script depending on your installation preferences.
+    ```
+    sh install_gui.sh
+    ```
+    The predifined intallation location is: `/opt/intel/`. This will be important in order to set the libraries and bin locations for the compilers. If you use another intallation location, you must change the locations of the `PATH` and `LD_LIBRARY_PATH` variables.
+2. Set the PATH and LD_LYBRARY_PATH to include no mpi libraries diferent from the OpenMPI:
+    ```
+    export LD_LIBRARY_PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8
+
+    export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:
+    ```
+3. Set compilers variables:
+    ```
+    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
+    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
+    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
+    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
     ```
 ---
 ## IV. Install OpenMPI
@@ -78,37 +92,22 @@ In order to make a more organized installation, its recommended to create a base
     ```
     cd openmpi-4.0.2
     ```
-5. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
-    ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    ```
 6. Set the configuration script. 'prefix' is the directory where the installation will be made. 'CC' is the location of the intel C compiler, 'FC' is the location of the intel fortran compiler and 'CXX' is the location of the C++ intel compiler.
     ```
-    ./configure --prefix=${BASEDIR}/OpenMPI CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
+    ./configure --prefix=${CMAQ_LIBRARIES}/OpenMPI CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
     ```
 7. Install OpenMPI:
     ```
     make all install
     ```
-4. Export BASEDIR to the $PATH:
+4. Export Openmpi libraries and executables to the $PATH:
     ```
-    export PATH=$PATH:${BASEDIR}/OpenMPI/bin
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${BASEDIR}/OpenMPI/lib
+    export PATH=$PATH:${CMAQ_LIBRARIES}/OpenMPI/bin
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${CMAQ_LIBRARIES}/OpenMPI/lib
     ```
 8. Return to the LIBRARIES directory
     ```
     cd ..
-    ```
----
-13. Set the PATH and LD_LYBRARY_PATH to include no mpi libraries diferent from the OpenMPI:
-    ```
-    export LD_LIBRARY_PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
-    export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/OpenMPI/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
     ```
 ---
 ## V. Instal netCDF-C
@@ -123,22 +122,13 @@ In order to make a more organized installation, its recommended to create a base
     ```
 3. Make the netCDF-C instalation directory:
     ```
-    mkdir ${BASEDIR}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1
+    mkdir ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1
     ```
-4. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
+4. Set the configuration script. 'prefix' is the directory where the installation will be made. It is necessay to disable 'netCDF 4' and 'DAP' for a correct installation.
     ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
+    ./configure --prefix=${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1 --disable-netcdf-4 --disable-dap
     ```
-5. Set the configuration script. 'prefix' is the directory where the installation will be made. It is necessay to disable 'netCDF 4' and 'DAP' for a correct installation.
-    ```
-    ./configure --prefix=${BASEDIR}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1 --disable-netcdf-4 --disable-dap
-    ```
-6. Make the installation and check that the configuration script worked correctly:
+5. Make the installation and check that the configuration script worked correctly:
     ```
     make check install |& tee make.install.log.txt 
     ```
@@ -146,7 +136,7 @@ In order to make a more organized installation, its recommended to create a base
         ```
         "| Congratulations! You have successfully installed netCDF! |"
         ```
-8. Return to the LIBRARIES directory
+6. Return to the LIBRARIES directory
     ```
     cd ..
     ```
@@ -163,30 +153,21 @@ In order to make a more organized installation, its recommended to create a base
     ```
 3. Make the netCDF-C instalation directory:
     ```
-    mkdir ${BASEDIR}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
+    mkdir ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
     ```
-4. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
+4. Set the netCDF-C directory, LD_LIBRARY_PATH, NFDIR, CPPFLAGS and LDFLAGS variables:
     ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    ```
-5. Set the netCDF-C directory, LD_LIBRARY_PATH, NFDIR, CPPFLAGS and LDFLAGS variables:
-    ```
-    export NCDIR=${BASEDIR}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1
+    export NCDIR=${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1
     export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}
-    export NFDIR=${BASEDIR}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
+    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
     export CPPFLAGS=-I${NCDIR}/include
     export LDFLAGS=-L${NCDIR}/lib
     ```
-6. Set the configuration script:
+5. Set the configuration script:
     ```
     ./configure --prefix=${NFDIR}
     ```
-7. Make the install and save de log file:
+6. Make the install and save de log file:
     ```
     make check |& tee make.check.log.txt
     ```
@@ -197,7 +178,7 @@ In order to make a more organized installation, its recommended to create a base
         # TOTAL: 1
         # PASS: 1
         ```
-8. Make the installation:
+7. Make the installation:
     ```
     make install |& tee ./make.install.log.txt
     ```
@@ -205,7 +186,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
     Libraries have been installed in:
     
-    [BASEDIR]/netcdf-fortran-4.5.2-intel19.1
+    [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-intel19.1
 
     If you ever happen to want to link against installed libraries
     in a given directory, LIBDIR, you must either use libtool, and
@@ -218,12 +199,12 @@ In order to make a more organized installation, its recommended to create a base
     - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
     - have your system administrator add LIBDIR to '/etc/ld.so.conf'
     ```
-9. Set LD_LIBRARY_PATH variable to include the netcdf-Fortran library path for netCDF build. May need to add the NCDIR and NFDIR to .cshrc:
+8. Set LD_LIBRARY_PATH variable to include the netcdf-Fortran library path for netCDF build. May need to add the NCDIR and NFDIR to .cshrc:
     ```
-    export NFDIR=${BASEDIR}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
+    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
     export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
     ```
-10. Return to the LIBRARIES directory
+9. Return to the LIBRARIES directory
     ```
     cd ..
     ```
@@ -241,14 +222,14 @@ In order to make a more organized installation, its recommended to create a base
     ```
     cp Makefile.template Makefile
     ```
-4. Edit the makefile BIN, BASEDIR and NCFLIBS variables:
+4. Edit the makefile BIN, CMAQ_LIBRARIES and NCFLIBS variables:
     ```
     vi Makefile
     ```
-    - Use this values. **[BASEDIR]** is the same location saved on $BASEDIR:
+    - Use this values. **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
         BIN = Linux2_x86_64ifort_openmpi4.0.2_intel19.1
-        BASEDIR = /[BASEDIR]
+        BASEDIR = /[CMAQ_LIBRARIES]
         NCFLIBS = -lnetcdff -lnetcdf
         ```
 5. Enter the ioapi folder:
@@ -284,11 +265,11 @@ In order to make a more organized installation, its recommended to create a base
     ```
     vi Makefile
     ```
- - **[BASEDIR]** is the same location saved on $BASEDIR:
-    ```
-    BASEDIR = /home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2
-    INSTDIR = /home/camilo/CMAQ-5.3.1/LIBRARIES/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 
-    ```
+    - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
+        ```
+        BASEDIR = /[CMAQ_LIBRARIES]/ioapi-3.2
+        INSTDIR = /[CMAQ_LIBRARIES]/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 
+        ```
 10. Enter the m3tools folder:
     ```
     cd ..
@@ -302,9 +283,9 @@ In order to make a more organized installation, its recommended to create a base
     ```
     vi Makefile
     ```
-    - **[BASEDIR]** is the same location saved on $BASEDIR:
+    - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BASEDIR = /[BASEDIR]
+        BASEDIR = /[CMAQ_LIBRARIES]
         ```
 13. Return to ioapi-3.2 folder:
     ```
@@ -321,32 +302,23 @@ In order to make a more organized installation, its recommended to create a base
     ```
 16. Link the netCDF-C and netCDF-Fortran libraries archives:
     ```
-    ln -s ${BASEDIR}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
-    ln -s ${BASEDIR}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
     ```
-18. Return to ioapi-3.2 folder:
+17. Return to ioapi-3.2 folder:
     ``` 
     cd ..
     ```
-14. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
-    ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    ```
-15. Make the insatll
+18. Make the insatll
     ```
     make all |& tee make.log 
     ```
-16. Copy .mod and .h files into the include directory (fixed_src):
+19. Copy .mod and .h files into the include directory (fixed_src):
     ```
-    cp ${BIN}/*.mod ${BASEDIR}/ioapi-3.2/ioapi/fixed_src
-    cp ioapi/*.h ${BASEDIR}/ioapi-3.2/ioapi/fixed_src
+    cp ${BIN}/*.mod ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
+    cp ioapi/*.h ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
     ```
-17. Return to the home directory:
+20. Return to the home directory:
     ```
     cd ..
     cd ..
@@ -363,20 +335,11 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     cd CMAQ_REPO
     git checkout -b my_branch
     ```
-3. Set the environment varibles for the C and fortran compilers. The locations bellow are standards for the Linux GUI setup for the 2020.0.166 Intel® Parallel Studio XE version:
-    ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    ```
-4. Set CMAQ_HOME in bldit_project.csh as set CMAQ_HOME = /home/[username]/CMAQ-5.3.1 and run the scipt. This will create the directories needes for the intallation:
+3. Set CMAQ_HOME in bldit_project.csh as set CMAQ_HOME = /home/[username]/CMAQ-5.3.1 and run the scipt. This will create the directories needes for the intallation:
     ```
     ./bldit_project.csh
     ```
-5. Go to the CMAQ_HOME directory and set the location of the libraries and include files on the config_cmaq.csh. The locations listed in here may vary between intallations and shoukd be rechecked on each sistem.
+4. Go to the CMAQ_HOME directory and set the location of the libraries and include files on the config_cmaq.csh. The locations listed in here may vary between intallations and shoukd be rechecked on each sistem.
     ```
     cd ..
     vi config_cmaq.csh
@@ -386,35 +349,35 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
         #> Intel fortran compiler......................................................
         case intel:
 
-        setenv IOAPI_INCL_DIR [BASEDIR]/ioapi-3.2/ioapi/fixed_src #> I/O API include header files
-        setenv IOAPI_LIB_DIR [BASEDIR]/ioapi-3.2/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 #> I/O API libraries
-        setenv NETCDF_LIB_DIR [BASEDIR]/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib #> netCDF C directory path
-        setenv NETCDF_INCL_DIR [BASEDIR]/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/include #> netCDF C directory path
-        setenv NETCDFF_LIB_DIR [BASEDIR]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib #> netCDF Fortran directory path
-        setenv NETCDFF_INCL_DIR [BASEDIR]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/include #> netCDF Fortran directory path
-        setenv MPI_LIB_DIR [BASEDIR]/OpenMPI/lib #> MPI directory path
+        setenv IOAPI_INCL_DIR [CMAQ_LIBRARIES]/ioapi-3.2/ioapi/fixed_src #> I/O API include header files
+        setenv IOAPI_LIB_DIR [CMAQ_LIBRARIES]/ioapi-3.2/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 #> I/O API libraries
+        setenv NETCDF_LIB_DIR [CMAQ_LIBRARIES]/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib #> netCDF C directory path
+        setenv NETCDF_INCL_DIR [CMAQ_LIBRARIES]/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/include #> netCDF C directory path
+        setenv NETCDFF_LIB_DIR [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib #> netCDF Fortran directory path
+        setenv NETCDFF_INCL_DIR [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/include #> netCDF Fortran directory path
+        setenv MPI_LIB_DIR [CMAQ_LIBRARIES]/OpenMPI/lib #> MPI directory path
         
         setenv myFC mpifort
         setenv myLINK_FLAG "-qopenmp"
         ...
         setenv netcdf_lib"-lnetcdf -lnetcdff" #> -lnetcdff -lnetcdf for netCDF v4.2.0 and later
         ```
-6. Run the config_cmaq.csh script whit the compiler optin 'intel'.
+5. Run the config_cmaq.csh script whit the compiler optin 'intel'.
     ```
     ./config_cmaq.csh intel
     ```
-7. Download the 2 day Benchmark data Input and Output folders found [here][2] and untar them on the ${CMAQ_HOME}/data directory. The code below assumes that your download destination was the /home/[user]/Downloads
+6. Download the 2 day Benchmark data Input and Output folders found [here][2] and untar them on the ${CMAQ_HOME}/data directory. The code below assumes that your download destination was the /home/[user]/Downloads
     ```
     cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz /home/camilo/CMAQ-5.3.1/data
     cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Output.tar.gz /home/camilo/CMAQ-5.3.1/data
     tar xvzf CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz
     tar xvzf CMAQv5.3.1_Benchmark_2Day_Output.tar.gz
     ```
-8. Enter the CCTM scrips folder:
+7. Enter the CCTM scrips folder:
     ```
     cd CCTM/scripts
     ```
-9. Edit the bldit_cctm.csh file in order to set the following conditios:
+8. Edit the bldit_cctm.csh file in order to set the following conditios:
     ```
     vi bldit_cctm.csh
     ```
@@ -430,15 +393,15 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
         - Chemistry solver: EBI
         - Aerosol module: AERO7
         - Cloud module: ACM_AE7
-10. Build the CCTM script and create the executable:
+9. Build the CCTM script and create the executable:
     ```
     ./bldit_cctm.csh intel |& tee bldit.cctm.log
     ```
-11. Check if the .EXE file was created:
+10. Check if the .EXE file was created:
     ```
     ls -al BLD_CCTM_v531_intel/CCTM_v531.exe
     ```
-12. Edit de CCTM run script depending on the number of precessor that you will use and the directories locations for the run:
+11. Edit de CCTM run script depending on the number of precessor that you will use and the directories locations for the run:
     ```
     vi run_cctm_Bench_2016_12SE1.csh
     ```
@@ -456,7 +419,7 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
         ```
     - Set the OpenMPI run script location:
     ```
-    set MPI = /[BASEDIR]/LIBRARIES/OpenMPI/bin
+    set MPI = /[CMAQ_LIBRARIES]/LIBRARIES/OpenMPI/bin
     set MPIRUN = $MPI/mpirun
     ```
     
