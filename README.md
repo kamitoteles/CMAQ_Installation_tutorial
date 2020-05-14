@@ -14,30 +14,12 @@ This set of instructions were tested on a Linux system with the following specif
 ## I. Needed libraries
 These libraries will be needed to assure some functionalities of the code. If you had already installed them in your system omit this part.
 
-- Update apt-get: 
-    ```
-    apt-get -y update
-    ```
-- Install git: 
-    ```
-    apt-get -y install git
-    ```
-- Install m4: 
-    ```
-    apt-get -y m4
-    ```
-- Install csh: 
-    ```
-    apt install csh
-    ```
-- Install gcc: 
-    ```
-    apt-get -y install build-essential
-    ```
-- Install gfortran: 
-    ```
-    apt-get -y install gfortran
-    ```
+- Update apt-get: `apt-get -y update`
+- Install git: `apt-get -y install git`
+- Install m4: `apt-get -y m4`
+- Install csh: `apt install csh`
+- Install gcc: `apt-get -y install build-essential`
+- Install gfortran: `apt-get -y install gfortran`
 ---
 ## II. Make Base Directory
 In order to make a more organized installation, its recommended to create a base directory where all the libraries and repositores will be downloaded and installed. This step is completelly optional.
@@ -63,6 +45,7 @@ In order to make a more organized installation, its recommended to create a base
     sh install_gui.sh
     ```
     The predifined intallation location is: `/opt/intel/`. This will be important in order to set the libraries and bin locations for the compilers. If you use another intallation location, you must change the locations of the `PATH` and `LD_LIBRARY_PATH` variables.
+
 2. Set the PATH and LD_LYBRARY_PATH to include no mpi libraries diferent from the OpenMPI:
     ```
     export LD_LIBRARY_PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8
