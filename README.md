@@ -44,17 +44,6 @@ These libraries will be needed to assure some functionalities of the code. If yo
     ```
     sh install_gui.sh
     ```
-2. Set the environment varibles for the C and fortran compilers. The locations bellow are the standards for the Linux GUI setup of the 2020.0.166 Intel® Parallel Studio XE version and may vary between installations:
-    ```
-    source /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/compilervars.sh -arch intel64 -platform linux
-    source /opt/intel/mkl/bin/mklvars.sh intel64
-    export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
-    export CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
-    export F77=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
-    ```
-    This last step will be repeated on each library instruction set. If you following all the installations in one run, you wont need to reset the variables.
-
 ---
 ## III. Make Base Directory
 In order to make a more organized installation, its recommended to create a base directory where all the libraries and repositores will be downloaded and installed. This step is completelly optional.
@@ -115,6 +104,8 @@ In order to make a more organized installation, its recommended to create a base
     ```
     cd ..
     ```
+---
+
 ---
 ## V. Instal netCDF-C
 1. Download and untar the netcdf-c-4.7.2 folder. The link must vary if you decide to use another version of netCDF-C:
@@ -463,11 +454,6 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     set MPI = /[BASEDIR]/LIBRARIES/OpenMPI/bin
     set MPIRUN = $MPI/mpirun
-    ```
-13. Set the PATH and LD_LYBRARY_PATH to include no mpi libraries diferent from the OpenMPI:
-    ```
-    export LD_LIBRARY_PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
-    export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/OpenMPI/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
     ```
     
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
