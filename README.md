@@ -443,12 +443,32 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     ls -al BLD_CCTM_v531_intel/CCTM_v531.exe
     ```
-12. Edit de CCTM run script depending on the number of precessor that you will use:
+12. Edit de CCTM run script depending on the number of precessor that you will use and the directories locations for the run:
     ```
     vi run_cctm_Bench_2016_12SE1.csh
+    ```
+    - Delete the compiler version variable when the config_cmaq.csh is runed in the script:
+    ```
+    source ./config_cmaq.csh $compiler
+    ```
+    - The directory of the bechmark input is:
+    ```
+    setenv INPDIR  /home/camilo/CMAQ-5.3.1/data/CMAQv5.3.1_Benchmark_2Day_Input/2016_12SE1  #Input Directory
     ```
     - This conditiosn must be set whith Y:
         ```
         setenv CTM_BIDI_FERT_NH3 Y
+        ```
+    - Set the OpenMPI run script location:
+    ```
+    set MPI = /[BASEDIR]/LIBRARIES/OpenMPI/bin
+    set MPIRUN = $MPI/mpirun
+    ```
+13. Set the PATH and LD_LYBRARY_PATH to include no mpi libraries diferent from the OpenMPI:
+    ```
+    export LD_LIBRARY_PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
+    export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/OpenMPI/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
+    ```
+    
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
 [2]: https://drive.google.com/drive/folders/10wFNch1MkI49ZjD2XD6wK2xzDWOav2zY
