@@ -52,7 +52,7 @@ In order to make a more organized installation, its recommended to create a base
 
     export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:
     ```
-3. Set compilers variables:
+3. Set compilers variables: **Aparently not neccesary**
     ```
     export FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
     export CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
@@ -91,13 +91,14 @@ In order to make a more organized installation, its recommended to create a base
 8. Return to the LIBRARIES directory
     ```
     cd ..
+    cd ..
     ```
 ---
 ## V. Instal netCDF-C
 1. Download and untar the netcdf-c-4.7.2 folder. The link must vary if you decide to use another version of netCDF-C:
     ```
     wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-4.7.2.tar.gz
-    tar -xzvf netcdf-c-4.7.0.tar.gz
+    tar -xzvf netcdf-c-4.7.2.tar.gz
     ```
 2. Enter the main folder:
     ```
@@ -212,7 +213,7 @@ In order to make a more organized installation, its recommended to create a base
     - Use this values. **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
         BIN = Linux2_x86_64ifort_openmpi4.0.2_intel19.1
-        BASEDIR = /[CMAQ_LIBRARIES]
+        INSTALL = /[CMAQ_LIBRARIES]
         NCFLIBS = -lnetcdff -lnetcdf
         ```
 5. Enter the ioapi folder:
@@ -229,6 +230,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
     - Use this values: ###############################
         ```
+        FC   = ifort -auto -warn notruncated_source
         OMPFLAGS = -qopenmp
         OMPLIBS = -qopenmp
 
@@ -239,6 +241,7 @@ In order to make a more organized installation, its recommended to create a base
         -DFSTR_L=int \
         -DIOAPI_NO_STDOUT=1 \
         -DAVOID_FLUSH=1 -DBIT32=1
+        ARCHLIB   =
         ```
 8. Create the Makefile from nocpl template:
     ```
@@ -309,6 +312,15 @@ In order to make a more organized installation, its recommended to create a base
 ---
 ## VIII. Install CMAQ and Benchamark
 This intructions set is a summary of the [Users Guide Installation and Benchmarking tutorial][1] and unlike the library installation instructions it has no significant changes besides the directories names. It is recommended to follow the original intructions page for a more indepth explanation of each step.
+
+**Note:** If for some reason the libraries instalation and the CMAQ building are made in diferent terminal sessions, you must export the complete path of all the compilers and libraries before proceding whit the installation. An example of the libraries needes is shown in the code bellow, but the locations could change depending on your specific build.
+```
+ echo $PATH
+/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
+root@Michael:/home/camilo/CMAQ-5.3.1# echo $LD_LIBRARY_PATH
+/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64ifort_openmpi4.0.2_intel19.1:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
+```
+
 1. Clone the CMAQ 5.3.1 repository:
     ```
     git clone -b master https://github.com/USEPA/CMAQ.git CMAQ_REPO
@@ -353,8 +365,10 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz /home/camilo/CMAQ-5.3.1/data
     cp /home/[user]/Downloads/CMAQv5.3.1_Benchmark_2Day_Output.tar.gz /home/camilo/CMAQ-5.3.1/data
+    cd data
     tar xvzf CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz
     tar xvzf CMAQv5.3.1_Benchmark_2Day_Output.tar.gz
+    cd ..
     ```
 7. Enter the CCTM scrips folder:
     ```
@@ -384,7 +398,7 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     ls -al BLD_CCTM_v531_intel/CCTM_v531.exe
     ```
-11. Edit de CCTM run script depending on the number of precessor that you will use and the directories locations for the run:
+11. Edit de CCTM run script depending on your specific setup for the run:
     ```
     vi run_cctm_Bench_2016_12SE1.csh
     ```
@@ -392,18 +406,30 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
     ```
     source ./config_cmaq.csh $compiler
     ```
-    - The directory of the bechmark input is:
+    - Set the directories locations for the run:
     ```
+    #> Set the build directory (this is where the CMAQ executable is located by default).
+    set BLD       = /home/camilo/CMAQ-5.3.1/CCTM/scripts/BLD_CCTM_${VRSN}_${compilerString}
+
+    setenv WORKDIR /home/camilo/CMAQ-5.3.1/CCTM/scripts       #> Working Directory. Where the runscript is.
+    setenv OUTDIR  /home/camilo/CMAQ-5.3.1/data/output_CCTM_${RUNID} #> Output Directory
     setenv INPDIR  /home/camilo/CMAQ-5.3.1/data/CMAQv5.3.1_Benchmark_2Day_Input/2016_12SE1  #Input Directory
     ```
+    - Set the **number of precessor** that you will use for the run:
+    ```
+    @ NPCOL  =  2; @ NPROW =  2
+    ```
+    The multiplication betwee `NPCOL` and `NPROW` sill be the total number of processors that will be used. The values of the command above are set for a 4 processor machine.
+
     - This conditiosn must be set whith Y:
         ```
         setenv CTM_BIDI_FERT_NH3 Y
         ```
-    - Set the OpenMPI run script location:
+    - Set the OpenMPI run script location and allow run as root:
     ```
     set MPI = /[CMAQ_LIBRARIES]/LIBRARIES/OpenMPI/bin
     set MPIRUN = $MPI/mpirun
+    ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
     ```
     
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
