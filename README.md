@@ -413,7 +413,7 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
         setenv OUTDIR  /home/camilo/CMAQ-5.3.1/data/output_CCTM_${RUNID} #> Output Directory
         setenv INPDIR  /home/camilo/CMAQ-5.3.1/data/CMAQv5.3.1_Benchmark_2Day_Input/2016_12SE1  #Input Directory
         ```
-    - Set the **number of precessor** that you will use for the run:
+    - Set the **number of processor** that you will use for the run:
         ```
         @ NPCOL  =  2; @ NPROW =  2
         ```
