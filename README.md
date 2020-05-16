@@ -315,10 +315,8 @@ This intructions set is a summary of the [Users Guide Installation and Benchmark
 
 **Note:** If for some reason the libraries instalation and the CMAQ building are made in diferent terminal sessions, you must export the complete path of all the compilers and libraries before proceding whit the installation. An example of the libraries needes is shown in the code bellow, but the locations could change depending on your specific build.
 ```
- echo $PATH
-/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
-root@Michael:/home/camilo/CMAQ-5.3.1# echo $LD_LIBRARY_PATH
-/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64ifort_openmpi4.0.2_intel19.1:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
+ export PATH=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/bin:/opt/intel/debugger_2020/gdb/intel64/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/bin
+export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64ifort_openmpi4.0.2_intel19.1:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib:/home/camilo/CMAQ-5.3.1/LIBRARIES/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/ipp/lib/intel64:/opt/intel/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/compilers_and_libraries_2020.0.166/linux/tbb/lib/intel64/gcc4.8:/opt/intel/debugger_2020/python/intel64/lib:/opt/intel/debugger_2020/libipt/intel64/lib:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/lib/intel64_lin:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.4:/opt/intel/compilers_and_libraries_2020.0.166/linux/daal/../tbb/lib/intel64_lin/gcc4.8:/home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/lib
 ```
 
 1. Clone the CMAQ 5.3.1 repository:
@@ -403,22 +401,22 @@ root@Michael:/home/camilo/CMAQ-5.3.1# echo $LD_LIBRARY_PATH
     vi run_cctm_Bench_2016_12SE1.csh
     ```
     - Delete the compiler version variable when the config_cmaq.csh is runed in the script:
-    ```
-    source ./config_cmaq.csh $compiler
-    ```
+        ```
+        source ./config_cmaq.csh $compiler
+        ```
     - Set the directories locations for the run:
-    ```
-    #> Set the build directory (this is where the CMAQ executable is located by default).
-    set BLD       = /home/camilo/CMAQ-5.3.1/CCTM/scripts/BLD_CCTM_${VRSN}_${compilerString}
+        ```
+        #> Set the build directory (this is where the CMAQ executable is located by default).
+        set BLD       = /home/camilo/CMAQ-5.3.1/CCTM/scripts/BLD_CCTM_${VRSN}_${compilerString}
 
-    setenv WORKDIR /home/camilo/CMAQ-5.3.1/CCTM/scripts       #> Working Directory. Where the runscript is.
-    setenv OUTDIR  /home/camilo/CMAQ-5.3.1/data/output_CCTM_${RUNID} #> Output Directory
-    setenv INPDIR  /home/camilo/CMAQ-5.3.1/data/CMAQv5.3.1_Benchmark_2Day_Input/2016_12SE1  #Input Directory
-    ```
+        setenv WORKDIR /home/camilo/CMAQ-5.3.1/CCTM/scripts       #> Working Directory. Where the runscript is.
+        setenv OUTDIR  /home/camilo/CMAQ-5.3.1/data/output_CCTM_${RUNID} #> Output Directory
+        setenv INPDIR  /home/camilo/CMAQ-5.3.1/data/CMAQv5.3.1_Benchmark_2Day_Input/2016_12SE1  #Input Directory
+        ```
     - Set the **number of precessor** that you will use for the run:
-    ```
-    @ NPCOL  =  2; @ NPROW =  2
-    ```
+        ```
+        @ NPCOL  =  2; @ NPROW =  2
+        ```
     The multiplication betwee `NPCOL` and `NPROW` sill be the total number of processors that will be used. The values of the command above are set for a 4 processor machine.
 
     - This conditiosn must be set whith Y:
@@ -426,11 +424,11 @@ root@Michael:/home/camilo/CMAQ-5.3.1# echo $LD_LIBRARY_PATH
         setenv CTM_BIDI_FERT_NH3 Y
         ```
     - Set the OpenMPI run script location and allow run as root:
-    ```
-    set MPI = /[CMAQ_LIBRARIES]/LIBRARIES/OpenMPI/bin
-    set MPIRUN = $MPI/mpirun
-    ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
-    ```
+        ```
+        set MPI = /[CMAQ_LIBRARIES]/LIBRARIES/OpenMPI/bin
+        set MPIRUN = $MPI/mpirun
+        ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
+        ```
     
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
 [2]: https://drive.google.com/drive/folders/10wFNch1MkI49ZjD2XD6wK2xzDWOav2zY
