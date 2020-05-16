@@ -429,6 +429,113 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
         set MPIRUN = $MPI/mpirun
         ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
         ```
-    
+12. Run the script:
+    ```
+    ./run_cctm_Bench_2016_12SE1.csh |& tee cctm.log
+    ```
+    - When the run is succesful, this message will apear in the terminal:
+        ```
+        >>----> Program completed successfully <----<<
+        ```
+---
+## IX. Installing VERDI
+In this tutorial we recomend using VERDI for quick checking the Benchmark output. This is not a mandatory requiriment, but it is recomended in order to realize possible errors in the run script configuration.
+
+1. Download VERDI. For this step you must have an CMAS account and download the tar.gz package fron [this page][3]. In this guide is used the 2.0 beta version of VERDI.
+2. Extract the tar file:
+    ```
+    tar -xvf /home/camilo/Downloads/VERDI_2.0_beta_linux64_20190820.tar.gz
+    ```
+3. Edit the `DIR` varible on `verdi.sh` to match the location of the installation:
+    ```
+    vi verdi.sh
+    ```
+4. Make a *verdi* directory:
+    ```
+    mkdir verdi
+    ```
+5. Create an empti text file named `verdi.alias` into the *verdi* directory:
+    ```
+    cd verdi
+    vi verdi.alias
+    ```
+    - Check that the text file have 0 lenght:
+        ```
+        ls -sh verdi.alias
+        ```
+6. Copy the `config.propierties.TEMPLATE` into the *verdi* directory and rename it as `config.propierties`.
+    ```
+    cp /home/camilo/CMAQ-5.3.1/VERDI_2.0_beta/config.properties.TEMPLATE config.properties
+    ```
+7. Run VERDI:
+    ```
+    cd ..
+    ./verdi.sh
+    ```
+---
+## X. Install CMAQ adjoint
+This installation is based on the msater branch of the adjoint.colorado.edu:8080 repository. To acsses the source code you must ask the creators for acsses permission.
+
+1. Download the source code and untar it into the CMAQ_HOME directory:
+    ```
+    tar -xzvf /home/camilo/Downloads/cmaq_adj-master.tar.gz /home/camilo/CMAQ-5.3.1
+    ```
+2. Copi the STENEX and PARIO libraries on the *lib* directory:
+    ```
+    cp -r /home/camilo/CMAQ-5.3.1/CMAQ_REPO/CCTM/src/STENEX /home/camilo/CMAQ-5.3.1/lib/x86_64/intel
+    cp -r /home/camilo/CMAQ-5.3.1/CMAQ_REPO/CCTM/src/PARIO /home/camilo/CMAQ-5.3.1/lib/x86_64/intel
+    ```
+3. Enter the adjoint directory:
+    ```
+    cd cmaq_adj
+    ```
+4. Configure the config.cmaq script based on your system:
+    ```
+    vi config.cmaq
+    ```
+    -Set the model locations:
+        ```
+        setenv M3HOME  /home/camilo/CMAQ-5.3.1/cmaq_adj-master
+        setenv M3MODEL /home/camilo/CMAQ-5.3.1/cmaq_adj-master/CCTM
+        setenv M3DATA  /home/camilo/CMAQ-5.3.1/data
+        ...
+        setenv lib_basedir /home/camilo/CMAQ-5.3.1/lib
+        ...
+        setenv myFC mpifort
+        setenv myCC icc
+        setenv myLINK_FLAG "-qopenmp"
+        setenv mpi "-lmpi"
+        ```
+5. Enter to the *BLDMAKE_git* folder and configure the Makefile:
+    ```
+    cd BLDMAKE_git
+    vi Makefile
+    ```
+    - Set the routes of the compilers and the system FLAGS:
+        ```
+        FC = /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
+        F_FLAGS = -O2 -fixed -extend_source -WB
+         CC = /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
+        ```
+6. Run the Makefile and check that the `bldmake` was created:
+    ```
+    make |& tee make.bld.log
+    ```
+7. Enter the *scripts* drectory:
+    ```
+    cd ../scripts
+    ```
+8. Copy the forward sweep template whith the system specific name and edit to match your system requrements:
+    ```
+    cp bldit.adjoint.fwd.sample bldit.adjoint.fwd.intel
+    vi bldit.adjoint.fwd.intel
+    ```
+    - Set the specified locations based on your installations:
+        ```
+        setenv M3MODEL /home/camilo/CMAQ-5.3.1/cmaq_adj-master
+        setenv lib_basedir /home/camilo/CMAQ-5.3.1/lib
+         setenv MPI_INC /home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/include
+
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
 [2]: https://drive.google.com/drive/folders/10wFNch1MkI49ZjD2XD6wK2xzDWOav2zY
+[3]: https://www.cmascenter.org/verdi/
