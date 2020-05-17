@@ -480,9 +480,16 @@ This installation is based on the msater branch of the adjoint.colorado.edu:8080
     ```
     tar -xzvf /home/camilo/Downloads/cmaq_adj-master.tar.gz /home/camilo/CMAQ-5.3.1
     ```
-2. Copi the STENEX and PARIO libraries on the *lib* directory:
+2. Add the STENEX and PARIO libraries on the *lib* directory:
     ```
     cp -r /home/camilo/CMAQ-5.3.1/CMAQ_REPO/CCTM/src/STENEX /home/camilo/CMAQ-5.3.1/lib/x86_64/intel
+    mkdir /home/camilo/CMAQ-5.3.1/lib/x86_64/intel/STENEX/se_noop
+    cd /home/camilo/CMAQ-5.3.1/lib/x86_64/intel/STENEX/se
+    cp  *.F ../se_noop
+    cp  *.f ../se_noop
+    cd ..
+    cd /home/camilo/CMAQ-5.3.1/lib/x86_64/intel/STENEX/noop
+    cp  *.f ../se_noop
     cp -r /home/camilo/CMAQ-5.3.1/CMAQ_REPO/CCTM/src/PARIO /home/camilo/CMAQ-5.3.1/lib/x86_64/intel
     ```
 3. Enter the adjoint directory:
@@ -534,8 +541,40 @@ This installation is based on the msater branch of the adjoint.colorado.edu:8080
         ```
         setenv M3MODEL /home/camilo/CMAQ-5.3.1/cmaq_adj-master
         setenv lib_basedir /home/camilo/CMAQ-5.3.1/lib
-         setenv MPI_INC /home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/include
-
+        setenv MPI_INC /home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/include
+        ...
+        # CHANGE: Set full path of Fortran 90 and c compilers
+         set FC = /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort
+         set CC = /opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc
+        ...
+        # CHANGE: Set location of MPICH if using multiple processors
+         set MPICH  =  " /home/camilo/CMAQ-5.3.1/LIBRARIES/OpenMPI/include -lmpi"
+        ...
+        # CHANGE: Set location for stenex library/include/and mod files
+         set STENEX = $M3LIB/STENEX/se_noop
+        ...
+        # CHANGE: Set compiler flags
+         set FSTD       = "-O3 -fno-alias -mp1 -fp-model source -ftz -simd -align all -xHost -vec-guard-write -unroll-aggressive"
+         set F_FLAGS    = "${FSTD} -O2 -module ${MODLOC} -I."
+         set CPP_FLAGS  = ""
+         set C_FLAGS    = "-O2"
+         set LINK_FLAGS = "-qopenmp"
+         ...
+         # CHANGE: Set location of libraries/include files
+         set IOAPI = "${M3LIB}/ioapi/lib -lioapi"
+         set ICL_IOAPI = ${M3LIB}/ioapi/include_files
+         set NETCDF = "${M3LIB}/netcdf/lib -lnetcdf"
+         set PARIO = "${M3LIB}/PARIO -lpario"
+        ```
+9. execute the build file:
+    ```
+    ./bldit.adjoint.fwd.intel |& tee bldit.fwd.log
+    ```
+7. Go to the new build directory and Make the forward sweep executable:
+    ```
+    cd ../BLD_fwd_noaero
+    make |& tee make.fwd.log
+    ```
 [1]: https://github.com/USEPA/CMAQ/blob/master/DOCS/Users_Guide/Tutorials/CMAQ_UG_tutorial_benchmark.md
 [2]: https://drive.google.com/drive/folders/10wFNch1MkI49ZjD2XD6wK2xzDWOav2zY
 [3]: https://www.cmascenter.org/verdi/
