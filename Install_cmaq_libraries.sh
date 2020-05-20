@@ -102,3 +102,95 @@ make install |& tee ./make.install.log.txt
 export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
 export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
 cd ..
+
+# Install I/O API
+git clone https://github.com/cjcoats/ioapi-3.2
+cd ioapi-3.2
+cp Makefile.template Makefile
+
+c=0
+while [ $c -le 1 ]
+do
+vi Makefile
+wait
+read -p 'Did you edited the Mekefile correctly? ' correct
+if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
+then
+    echo Please edit the Makefile
+    sleep 5
+else
+    c=2
+fi
+done
+
+cd ioapi
+cp Makeinclude.Linux2_x86_64ifort Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+
+c=0
+while [ $c -le 1 ]
+do
+vi Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+wait
+read -p 'Did you edited the Mekeinclude correctly? ' correct
+if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
+then
+    echo Please edit the Makeinclude
+    sleep 5
+else
+    c=2
+fi
+done
+
+cp Makefile.nocpl Makefile
+
+c=0
+while [ $c -le 1 ]
+do
+vi Makefile
+wait
+read -p 'Did you edited the Mekefile correctly? ' correct
+if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
+then
+    echo Please edit the Makefile
+    sleep 5
+else
+    c=2
+fi
+done
+
+cd ..
+cd m3tools
+cp Makefile.nocpl Makefile
+
+c=0
+while [ $c -le 1 ]
+do
+vi Makefile
+wait
+read -p 'Did you edited the Mekefile correctly? ' correct
+if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
+then
+    echo Please edit the Makefile
+    sleep 5
+else
+    c=2
+fi
+done
+
+cd ..
+export BIN=Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+mkdir $BIN
+cd $BIN
+ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
+ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
+cd ..
+make all |& tee make.log
+cp ${BIN}/*.mod ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
+cp ioapi/*.h ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
+cd ..
+cd ..
+
+# Install CMAQ-5.3.1
+git clone -b master https://github.com/USEPA/CMAQ.git CMAQ_REPO
+cd CMAQ_REPO
+git checkout -b my_branch

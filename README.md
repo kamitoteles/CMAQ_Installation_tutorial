@@ -425,7 +425,7 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
         ```
     - Set the OpenMPI run script location and allow run as root:
         ```
-        set MPI = /[CMAQ_LIBRARIES]/LIBRARIES/OpenMPI/bin
+        set MPI = /[CMAQ_LIBRARIES]/OpenMPI/bin
         set MPIRUN = $MPI/mpirun
         ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
         ```
