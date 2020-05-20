@@ -328,7 +328,7 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
     cd CMAQ_REPO
     git checkout -b my_branch
     ```
-3. Set CMAQ_HOME in bldit_project.csh as set CMAQ_HOME = /home/[username]/CMAQ-5.3.1 and run the scipt. This will create the directories needes for the intallation:
+3. Set CMAQ_HOME in bldit_project.csh as CMAQ_HOME = /home/[username]/CMAQ-5.3.1 and run the scipt. This will create the directories needed for the intallation:
     ```
     ./bldit_project.csh
     ```
