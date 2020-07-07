@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ask the user for the hame directory of the installation and the compiler locations
+# Ask the user for the name directory of the installation and the compiler locations
 c=0
 while [ $c -le 1 ]
 do
