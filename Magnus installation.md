@@ -52,7 +52,7 @@ export CMAQ_LIBRARIES=$PWD
     ```
 6. Set the configuration script.
     ```
-    ./configure --prefix=${CMAQ_LIBRARIES}/OpenMPI CC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icc FC=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/ifort CXX=/opt/intel/compilers_and_libraries_2020.0.166/linux/bin/intel64/icpc
+    ./configure --prefix=${CMAQ_LIBRARIES}/OpenMPI CC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/bin/x86_64-conda_cos6-linux-gnu-gcc FC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/bin/x86_64-conda_cos6-linux-gnu-gfortran CXX=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/bin/x86_64-conda_cos6-linux-gnu-g++
     ```
 7. Install OpenMPI:
     ```
