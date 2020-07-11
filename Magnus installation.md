@@ -39,8 +39,6 @@ export CMAQ_LIBRARIES=$PWD
 ## IV. Install openmpi
 1. Set the enviroment varibles:
     ```
-    export CPPFLAGS='-DNDEBUG –DgFortran'
-
     export CFLAGS=-O
 
     export FFLAGS='-O –w'
@@ -85,11 +83,11 @@ export CMAQ_LIBRARIES=$PWD
     ```
 3. Make the netCDF-C instalation directory:
     ```
-    mkdir ${CMAQ_LIBRARIES}/netcdf-c4.7.2-openmpi4.0.2-gcc7.3.0
+    mkdir ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-gcc7.3.0
     ```
 4. Set the configuration script. 'prefix' is the directory where the installation will be made. It is necessay to disable 'netCDF 4' and 'DAP' for a correct installation.
     ```
-    ./configure --prefix=${CMAQ_LIBRARIES}/netcdf-c4.7.2-openmpi4.0.2-gcc7.3.0 --disable-netcdf-4 --disable-dap
+    ./configure --prefix=${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-gcc7.3.0 --disable-netcdf-4 --disable-dap
     ```
 5. Make the installation and check that the configuration script worked correctly:
     ```
@@ -100,6 +98,74 @@ export CMAQ_LIBRARIES=$PWD
         "| Congratulations! You have successfully installed netCDF! |"
         ```
 6. Return to the LIBRARIES directory
+    ```
+    cd ..
+    ```
+---
+## VI. Install netCDF-Fortran
+1. Download and untar the netcdf-fortran-4.5.2 folder. The link must vary if you decide to use another version of netCDF-Fortran:
+    ```
+    wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.5.2.tar.gz 
+    tar -xzvf netcdf-fortran-4.5.2.tar.gz
+    ```
+2. Enter the main folder:
+    ```
+    cd netcdf-fortran-4.5.2
+    ```
+3. Make the netCDF-C instalation directory:
+    ```
+    mkdir ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-gcc7.3.0
+    ```
+4. Set the netCDF-C directory, LD_LIBRARY_PATH, NFDIR, CPPFLAGS and LDFLAGS variables:
+    ```
+    export NCDIR=${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-gcc7.3.0
+    export LD_LIBRARY_PATH=${NCDIR}/lib:${LD_LIBRARY_PATH}
+    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-gcc7.3.0
+    export CPPFLAGS=-I${NCDIR}/include
+    export LDFLAGS=-L${NCDIR}/lib
+    ```
+5. Set the configuration script:
+    ```
+    ./configure --prefix=${NFDIR}
+    ```
+6. Make the install and save de log file:
+    ```
+    make check |& tee make.check.log.txt
+    ```
+     - This will be the output if the make check command was succesfull:
+        ```
+        Testsuite summary for netCDF-Fortran 4.4.5
+        ==========================================
+        # TOTAL: 1
+        # PASS: 1
+        ```
+7. Make the installation:
+    ```
+    make install |& tee ./make.install.log.txt
+    ```
+    - This will be the output when the make install command was successful:
+    ```
+    Libraries have been installed in:
+    
+    [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-intel19.1
+
+    If you ever happen to want to link against installed libraries
+    in a given directory, LIBDIR, you must either use libtool, and
+    specify the full pathname of the library, or use the '-LLIBDIR'
+    flag during linking and do at least one of the following:
+    - add LIBDIR to the 'LD_LIBRARY_PATH' environment variable
+    during execution
+    - add LIBDIR to the 'LD_RUN_PATH' environment variable
+    during linking
+    - use the '-Wl,-rpath -Wl,LIBDIR' linker flag
+    - have your system administrator add LIBDIR to '/etc/ld.so.conf'
+    ```
+8. Set LD_LIBRARY_PATH variable to include the netcdf-Fortran library path for netCDF build. May need to add the NCDIR and NFDIR to .cshrc:
+    ```
+    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
+    export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
+    ```
+9. Return to the LIBRARIES directory
     ```
     cd ..
     ```
