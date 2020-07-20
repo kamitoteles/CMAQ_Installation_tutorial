@@ -1,4 +1,4 @@
-# HOla Magnus installation
+# Magnus installation
 ## I. Set conda environment
 
 Create conda enviroment whith the CMAQ installation version
@@ -179,19 +179,18 @@ export CMAQ_LIBRARIES=$PWD
     ```
 ---
 ## VII.Install I/O API
-1. Download I/O API version 3.2 repository:
+1. Download I/O API version 3.1:
     ```
-    git clone https://github.com/cjcoats/ioapi-3.2
+    wget https://www.cmascenter.org/ioapi/download/ioapi-3.1.tar.gz
+    mkdir ioapi-3.1
+    mv ioapi-3.1.tar.gz ioapi-3.1
+    tar -xzvf ioapi-3.1.tar.gz 
     ```
 2. Enter to the downloaded folder:
     ```
-    cd ioapi-3.2
+    cd ioapi-3.1
     ```
-3. Create the Makefile from template:
-    ```
-    cp Makefile.template Makefile
-    ```
-4. Edit the makefile BIN, CMAQ_LIBRARIES and NCFLIBS variables:
+3. Edit the makefile BIN, CMAQ_LIBRARIES and NCFLIBS variables:
     ```
     vi Makefile
     ```
