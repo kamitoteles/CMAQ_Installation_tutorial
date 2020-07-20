@@ -1,4 +1,4 @@
-# Magnus installation
+# HOla Magnus installation
 ## I. Set conda environment
 
 Create conda enviroment whith the CMAQ installation version
@@ -175,6 +175,123 @@ export CMAQ_LIBRARIES=$PWD
     ```
 9. Return to the LIBRARIES directory
     ```
+    cd ..
+    ```
+---
+## VII.Install I/O API
+1. Download I/O API version 3.2 repository:
+    ```
+    git clone https://github.com/cjcoats/ioapi-3.2
+    ```
+2. Enter to the downloaded folder:
+    ```
+    cd ioapi-3.2
+    ```
+3. Create the Makefile from template:
+    ```
+    cp Makefile.template Makefile
+    ```
+4. Edit the makefile BIN, CMAQ_LIBRARIES and NCFLIBS variables:
+    ```
+    vi Makefile
+    ```
+    - Use this values. **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
+        ```
+        BIN = Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+        INSTALL = /[CMAQ_LIBRARIES]
+        NCFLIBS = -lnetcdff -lnetcdf
+        ```
+5. Enter the ioapi folder:
+    ```
+    cd ioapi
+    ```
+6. Create a personalized Makeinclude file from template:
+    ```
+    cp Makeinclude.Linux2_x86_64ifort Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    ```
+7. Edit the Makeinclude file:
+    ```
+    vi Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    ```
+    - Use this values: ###############################
+        ```
+        FC   = ifort -auto -warn notruncated_source
+        OMPFLAGS = -qopenmp
+        OMPLIBS = -qopenmp
+
+        ARCHFLAGS = \
+        -DIOAPI_NCF4=1 \
+        -DAUTO_ARRAYS=1 \
+        -DF90=1 -DFLDMN=1 \
+        -DFSTR_L=int \
+        -DIOAPI_NO_STDOUT=1 \
+        -DAVOID_FLUSH=1 -DBIT32=1
+        ARCHLIB   =
+        ```
+8. Create the Makefile from nocpl template:
+    ```
+    cp Makefile.nocpl Makefile
+    ```
+9. Edit Makefile:
+    ```
+    vi Makefile
+    ```
+    - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
+        ```
+        BASEDIR = /[CMAQ_LIBRARIES]/ioapi-3.2
+        INSTDIR = /[CMAQ_LIBRARIES]/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 
+        ```
+10. Enter the m3tools folder:
+    ```
+    cd ..
+    cd m3tools
+    ```
+11. Create the Makefile from nocpl template:
+    ```
+    cp Makefile.nocpl Makefile
+    ```
+12. Edit Makefile:
+    ```
+    vi Makefile
+    ```
+    - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
+        ```
+        BASEDIR = /[CMAQ_LIBRARIES]
+        ```
+13. Return to ioapi-3.2 folder:
+    ```
+    cd ..
+    ```
+14. Set the BIN variable as:
+    ```
+    export BIN=Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    ```
+15. Create the BIN directory. (This will be the location of the I/O API library)
+    ```
+    mkdir $BIN
+    cd $BIN
+    ```
+16. Link the netCDF-C and netCDF-Fortran libraries archives:
+    ```
+    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
+    ```
+17. Return to ioapi-3.2 folder:
+    ``` 
+    cd ..
+    ```
+18. Make the insatll
+    ```
+    make all |& tee make.log 
+    ```
+19. Copy .mod and .h files into the include directory (fixed_src):
+    ```
+    cp ${BIN}/*.mod ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
+    cp ioapi/*.h ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
+    ```
+20. Return to the home directory:
+    ```
+    cd ..
     cd ..
     ```
 ---
