@@ -124,14 +124,6 @@ export CMAQ_LIBRARIES=$PWD
     export CPPFLAGS=-I${NCDIR}/include
     export LDFLAGS=-L${NCDIR}/lib
     ```
-
-    Library paths corrected
-    ```
-    export LD_LIBRARY_PATH=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/CMAQ_5.0.2/LIBRARIES/netcdf-c-4.7.2-openmpi4.0.2-gcc7.3.0/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/CMAQ_5.0.2/LIBRARIES/OpenMPI/lib
-
-    export PATH=export PATH=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/bin:/hpcfs/apps/anaconda/3.7/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ganglia/bin:/opt/ganglia/sbin:/opt/pdsh/bin:/opt/rocks/bin:/opt/rocks/sbin:/hpcfs/home/ca.moreno12/.local/bin:/hpcfs/home/ca.moreno12/bin:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_5.0.2_env/CMAQ_5.0.2/LIBRARIES/OpenMPI/bin
-    ```
-
 5. Set the configuration script:
     ```
     ./configure --prefix=${NFDIR}
@@ -155,7 +147,7 @@ export CMAQ_LIBRARIES=$PWD
     ```
     Libraries have been installed in:
     
-    [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-intel19.1
+    [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-gcc7.3.0
 
     If you ever happen to want to link against installed libraries
     in a given directory, LIBDIR, you must either use libtool, and
@@ -170,7 +162,7 @@ export CMAQ_LIBRARIES=$PWD
     ```
 8. Set LD_LIBRARY_PATH variable to include the netcdf-Fortran library path for netCDF build. May need to add the NCDIR and NFDIR to .cshrc:
     ```
-    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1
+    export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-gcc7.3.0
     export LD_LIBRARY_PATH=${NFDIR}/lib:${LD_LIBRARY_PATH}
     ```
 9. Return to the LIBRARIES directory
@@ -196,9 +188,18 @@ export CMAQ_LIBRARIES=$PWD
     ```
     - Use this values. **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BIN = Linux2_x86_64ifort_openmpi4.0.2_intel19.1
-        INSTALL = /[CMAQ_LIBRARIES]
+        BIN      = Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
+        BASEDIR    = ${PWD} 
+        INSTALL  = ${CMAQ_LIBRARIES}
+        LIBINST    = $(INSTALL)/$(BIN)
+        BININST    = $(INSTALL)/$(BIN)
         NCFLIBS = -lnetcdff -lnetcdf
+
+        #               ****   Variants   ****
+        #
+        CPLMODE  = nocpl              #  turn off PVM coupling mode
+        IOAPIDEFS=                    #  for "nocpl"
+        PVMINCL  = /dev/null          #  for "nocpl"
         ```
 5. Enter the ioapi folder:
     ```
@@ -206,29 +207,25 @@ export CMAQ_LIBRARIES=$PWD
     ```
 6. Create a personalized Makeinclude file from template:
     ```
-    cp Makeinclude.Linux2_x86_64ifort Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    cp Makeinclude.Linux2_x86_64gfort Makeinclude.Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
     ```
 7. Edit the Makeinclude file:
     ```
-    vi Makeinclude.Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    vi Makeinclude.Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
     ```
     - Use this values: ###############################
         ```
-        FC   = ifort -auto -warn notruncated_source
-        OMPFLAGS = -qopenmp
-        OMPLIBS = -qopenmp
-
         ARCHFLAGS = \
         -DIOAPI_NCF4=1 \
         -DAUTO_ARRAYS=1 \
         -DF90=1 -DFLDMN=1 \
         -DFSTR_L=int \
         -DIOAPI_NO_STDOUT=1 \
-        -DAVOID_FLUSH=1 -DBIT32=1
-        ARCHLIB   =
+        -DNEED_ARGS=1
         ```
 8. Create the Makefile from nocpl template:
     ```
+    rm Makefile
     cp Makefile.nocpl Makefile
     ```
 9. Edit Makefile:
@@ -237,8 +234,16 @@ export CMAQ_LIBRARIES=$PWD
     ```
     - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BASEDIR = /[CMAQ_LIBRARIES]/ioapi-3.2
-        INSTDIR = /[CMAQ_LIBRARIES]/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 
+        BIN = Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
+        BASEDIR = ${CMAQ_LIBRARIES}/ioapi-3.1
+
+        IODIR   = ${BASEDIR}/ioapi
+
+        # OBJDIR = ${IODIR}/../lib
+        # OBJDIR = ${IODIR}/../${BIN}
+        OBJDIR  = ${BASEDIR}/${BIN}
+
+        INSTDIR = ${CMAQ_LIBRARIES}/Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
         ```
 10. Enter the m3tools folder:
     ```
@@ -247,6 +252,7 @@ export CMAQ_LIBRARIES=$PWD
     ```
 11. Create the Makefile from nocpl template:
     ```
+    rm Makefile
     cp Makefile.nocpl Makefile
     ```
 12. Edit Makefile:
@@ -255,7 +261,11 @@ export CMAQ_LIBRARIES=$PWD
     ```
     - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BASEDIR = /[CMAQ_LIBRARIES]
+        BIN = Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
+        BASEDIR = ${CMAQ_LIBRARIES}/ioapi-3.1
+        SRCDIR  = ${BASEDIR}/m3tools
+        IODIR   = ${BASEDIR}/ioapi
+        OBJDIR  = ${BASEDIR}/${BIN}
         ```
 13. Return to ioapi-3.2 folder:
     ```
@@ -263,7 +273,7 @@ export CMAQ_LIBRARIES=$PWD
     ```
 14. Set the BIN variable as:
     ```
-    export BIN=Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    export BIN=Linux2_x86_64gfort_openmpi4.0.2_gcc7.3.0
     ```
 15. Create the BIN directory. (This will be the location of the I/O API library)
     ```
@@ -272,8 +282,8 @@ export CMAQ_LIBRARIES=$PWD
     ```
 16. Link the netCDF-C and netCDF-Fortran libraries archives:
     ```
-    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
-    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-gcc7.3.0/lib/libnetcdf.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-gcc7.3.0/lib/libnetcdff.a
     ```
 17. Return to ioapi-3.2 folder:
     ``` 
