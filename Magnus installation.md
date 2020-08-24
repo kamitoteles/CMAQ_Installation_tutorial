@@ -18,6 +18,7 @@ cd [conda_prefix]
 ## II. Install needed libraries
 
 - Install git: `conda install git`
+- Install build-essential: 
 - Install m4: `conda intall m4`
 - Install gcc: `conda install -c anaconda gcc_linux-64`
 - Install gfortran: `conda install -c anaconda gfortran_linux-64`

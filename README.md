@@ -299,12 +299,18 @@ In order to make a more organized installation, its recommended to create a base
     ```
     make all |& tee make.log 
     ```
-19. Copy .mod and .h files into the include directory (fixed_src):
+19. Check that the libraries were made
+    ```
+    cd $BIN
+    ls -lrt libioapi.a
+    ls -rlt m3xtract
+    ```
+20. Copy .mod and .h files into the include directory (fixed_src):
     ```
     cp ${BIN}/*.mod ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
     cp ioapi/*.h ${CMAQ_LIBRARIES}/ioapi-3.2/ioapi/fixed_src
     ```
-20. Return to the home directory:
+21. Return to the home directory:
     ```
     cd ..
     cd ..
