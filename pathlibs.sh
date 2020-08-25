@@ -2,6 +2,12 @@ export PATH=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_lib
 
 export LD_LIBRARY_PATH=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/netcdf-c-4.7.2-openmpi-1.8.1-intel/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/compiler/lib/intel64_lin:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/libfabric/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/ipp/lib/intel64:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/mkl/lib/intel64_lin:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/tbb/lib/intel64/gcc4.8:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/debugger_2020/python/intel64/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/debugger_2020/libipt/intel64/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries_2020.2.254/linux/daal/lib/intel64_lin:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/netcdf-c-4.7.2-openmpi-1.8.1-intel/lib:/opt/openmpi/lib:/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/openmpi-1.8.1/install/lib
 
+export CC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/icc 
+export FC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/ifort 
+export F77=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/ifort 
+export CXX=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/icpc
+
+
 #OPENMPI 1.8.1
 ./configure --prefix=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/openmpi-1.8.1/install CC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/icc FC=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/ifort CXX=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/intel/compilers_and_libraries/linux/bin/intel64/icpc
 
