@@ -4,8 +4,10 @@
 c=0
 while [ $c -le 1 ]
 do
-    echo Enter the directory wher the input and outut benchmark data is: 
-    read Bench_data
+    echo Enter the Input benchmark data location: 
+    read Bench_data_input
+    echo Enter the Output benchmark data location: 
+    read Bench_data_output
     echo Enter the home directory path of the installation: 
     read HOME_D
     echo Enter the CC compiler location: 
@@ -15,7 +17,8 @@ do
     echo Enter the C++ compiler locations: 
     read CXX
 
-    export BENCH_DATA=${Bench_data}
+    export BENCH_DATA_I=${Bench_data_input}
+    export BENCH_DATA_O=${Bench_data_output}
     export HOME_D=${HOME_D}
     export CC=${CC}
     export FC=${FC}
@@ -235,11 +238,10 @@ done
 
 ./config_cmaq.csh intel; wait
 
-cp {$BENCH_DATA}/CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz ${CMAQ_HOME}/data; wait
-cp {$BENCH_DATA}/CMAQv5.3.1_Benchmark_2Day_Output.tar.gz ${CMAQ_HOME}/data; wait
-cd data
-tar xvzf CMAQv5.3.1_Benchmark_2Day_Input_20191219.tar.gz; wait
-tar xvzf CMAQv5.3.1_Benchmark_2Day_Output.tar.gz; wait
+cp ${BENCH_DATA_I} ${CMAQ_HOME}/data; wait
+cp ${BENCH_DATA_O} ${CMAQ_HOME}/data; wait
+${CMAQ_HOME}/data
+tar xvzf *; wait
 cd ..
 cd CCTM/scripts
 
