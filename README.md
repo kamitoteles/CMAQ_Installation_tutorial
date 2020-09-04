@@ -36,7 +36,7 @@ In order to make a more organized installation, its recommended to create a base
 3. Enter into LIBRARIES and make it your base directory with the $CMAQ_LIBRARIES variable. Replace **[initial_dir]** with the location where the home directory is located:
     ```
     cd LIBRARIES
-    export CMAQ_LIBRARIES=/[initial_dir]/CMAQ-5.3.1/LIBRARIES
+    export CMAQ_LIBRARIES=${PWD}
     ```
 ---
 ## III. Set intel compliers

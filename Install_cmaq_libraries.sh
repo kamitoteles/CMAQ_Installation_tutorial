@@ -4,39 +4,39 @@
 c=0
 while [ $c -le 1 ]
 do
-echo Enter the directory wher the input and outut benchmark data is: 
-read Bench_data
-echo Enter the home directory path of the installation: 
-read HOME_D
-echo Enter the CC compiler location: 
-read CC
-echo Enter the FC compiler location: 
-read FC
-echo Enter the C++ compiler locations: 
-read CXX
+    echo Enter the directory wher the input and outut benchmark data is: 
+    read Bench_data
+    echo Enter the home directory path of the installation: 
+    read HOME_D
+    echo Enter the CC compiler location: 
+    read CC
+    echo Enter the FC compiler location: 
+    read FC
+    echo Enter the C++ compiler locations: 
+    read CXX
 
-export BENCH_DATA=${Bench_data}
-export HOME_D=${HOME_D}
-export CC=${CC}
-export FC=${FC}
-export CXX=${CXX}
-export F77=${FC}
+    export BENCH_DATA=${Bench_data}
+    export HOME_D=${HOME_D}
+    export CC=${CC}
+    export FC=${FC}
+    export CXX=${CXX}
+    export F77=${FC}
 
-echo The home directory was set to: $HOME_D
-echo The CC location is set to: $CC
-echo The FC location is set to: $FC
-echo The C++ location is set to: $CXX
-echo The F77 location is set to: $F77
+    echo The home directory was set to: $HOME_D
+    echo The CC location is set to: $CC
+    echo The FC location is set to: $FC
+    echo The C++ location is set to: $CXX
+    echo The F77 location is set to: $F77
 
-read -p 'Are those the correct locations? ' correct
+    read -p 'Are those the correct locations? ' correct
 
-if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
-then
-    echo Please enter the correct paths
-    echo
-else
-    c=2
-fi
+    if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
+    then
+        echo Please enter the correct paths
+        echo
+    else
+        c=2
+    fi
 done
 
 # Set the home CMAQ directory
@@ -65,8 +65,6 @@ export PATH=${paths}
 export LD_LIBRARY_PATH=${libs}
 
 # Install OpenMPI
-mkdir OpenMPI
-cd OpenMPI
 wget https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-4.0.2.tar.gz
 tar -xzvf openmpi-4.0.2.tar.gz
 rm openmpi-4.0.2.tar.gz
