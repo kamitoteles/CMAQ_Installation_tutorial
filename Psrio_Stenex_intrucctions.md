@@ -1,14 +1,10 @@
-Set environment variable (path) for M3HOME:
 
-       setenv M3HOME /project/air5/sjr/CMAS4.7.1/rel
+export M3HOME=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/CMAQ_4.7.1/CMAQ_REPO
+export M3MODEL=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/CMAQ_4.7.1/CMAQ_REPO/models
+export M3LIB=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/CMAQ_4.7.1/CMAQ_REPO/lib
+export M3DATA=/hpcfs/home/ca.moreno12/.conda/envs/cmaq_env/CMAQ_4.7.1/CMAQ_REPO/data
 
- 2) Set environment variables (paths) for M3MODEL, M3LIB and M3DATA as:
-
-       setenv M3MODEL  $M3HOME/models
-       setenv M3LIB    $M3HOME/lib  (you need to create this subdirectory)
-       setenv M3DATA   $M3HOME/data
-
- 3) cd to $M3HOME and gunzip and untar the data tar file, M3DATA.tar.gz.
+ 1) cd to $M3HOME and gunzip and untar the data tar file, M3DATA.tar.gz.
     This will produce the following subdirectories:
 
        data/
@@ -27,7 +23,7 @@ Set environment variable (path) for M3HOME:
               icon/
               phot/
 
- 4) Create (mkdir) the subdirectory $M3LIB and the following subdirectories
+ 2) Create (mkdir) the subdirectory $M3LIB and the following subdirectories
     under $M3LIB:
 
           build/

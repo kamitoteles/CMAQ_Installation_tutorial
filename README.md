@@ -212,7 +212,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
     - Use this values. **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BIN = Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+        BIN = Linux2_x86_64ifort_intel20.2
         INSTALL = /[CMAQ_LIBRARIES]
         NCFLIBS = -lnetcdff -lnetcdf
         ```
@@ -254,7 +254,7 @@ In order to make a more organized installation, its recommended to create a base
     - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
         BASEDIR = /[CMAQ_LIBRARIES]/ioapi-3.2
-        INSTDIR = /[CMAQ_LIBRARIES]/Linux2_x86_64ifort_openmpi4.0.2_intel19.1 
+        INSTDIR = /[CMAQ_LIBRARIES]/Linux2_x86_64ifort_intel20.2
         ```
 10. Enter the m3tools folder:
     ```
@@ -271,7 +271,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
     - **[CMAQ_LIBRARIES]** is the same location saved on $CMAQ_LIBRARIES:
         ```
-        BASEDIR = /[CMAQ_LIBRARIES]
+        BASEDIR = /[CMAQ_LIBRARIES]/ioapi-3.2
         ```
 13. Return to ioapi-3.2 folder:
     ```
@@ -279,7 +279,7 @@ In order to make a more organized installation, its recommended to create a base
     ```
 14. Set the BIN variable as:
     ```
-    export BIN=Linux2_x86_64ifort_openmpi4.0.2_intel19.1
+    export BIN=Linux2_x86_64ifort_intel20.2
     ```
 15. Create the BIN directory. (This will be the location of the I/O API library)
     ```
@@ -288,8 +288,8 @@ In order to make a more organized installation, its recommended to create a base
     ```
 16. Link the netCDF-C and netCDF-Fortran libraries archives:
     ```
-    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/lib/libnetcdf.a
-    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib/libnetcdff.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-c-4.7.2-intel20.2/lib/libnetcdf.a
+    ln -s ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-intel20.2/lib/libnetcdff.a
     ```
 17. Return to ioapi-3.2 folder:
     ``` 
@@ -354,9 +354,9 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
         setenv NETCDF_INCL_DIR [CMAQ_LIBRARIES]/netcdf-c-4.7.2-openmpi4.0.2-intel19.1/include #> netCDF C directory path
         setenv NETCDFF_LIB_DIR [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/lib #> netCDF Fortran directory path
         setenv NETCDFF_INCL_DIR [CMAQ_LIBRARIES]/netcdf-fortran-4.5.2-openmpi4.0.2-intel19.1/include #> netCDF Fortran directory path
-        setenv MPI_LIB_DIR [CMAQ_LIBRARIES]/OpenMPI/lib #> MPI directory path
+        setenv MPI_LIB_DIR [CMAQ_LIBRARIES]/OpenMPI #> MPI directory path
         
-        setenv myFC mpifort
+        setenv myFC mpiifort
         setenv myLINK_FLAG "-qopenmp"
         ...
         setenv netcdf_lib"-lnetcdf -lnetcdff" #> -lnetcdff -lnetcdf for netCDF v4.2.0 and later
@@ -434,6 +434,11 @@ export LD_LIBRARY_PATH=/home/camilo/CMAQ-5.3.1/LIBRARIES/ioapi-3.2/Linux2_x86_64
         set MPI = /[CMAQ_LIBRARIES]/OpenMPI/bin
         set MPIRUN = $MPI/mpirun
         ( /usr/bin/time -p mpirun --allow-run-as-root -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
+        
+        ## Note: for magnus the last line is
+        ( time mpirun -np $NPROCS $BLD/$EXEC ) |& tee buff_${EXECUTION_ID}.txt
+
+        ## And all usr/bin/rm must be repplaced whith only rm
         ```
 12. Run the script:
     ```
