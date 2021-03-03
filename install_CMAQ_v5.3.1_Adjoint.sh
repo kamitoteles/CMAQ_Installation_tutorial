@@ -71,7 +71,7 @@ cd ${CMAQ_LIBRARIES}
 
 # Install netCDF-C
 wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-c-4.7.2.tar.gz;wait
-tar -xzvf netcdf-c-4.7.2.tar.gz; wait
+tar -xzvf netcdf-c-4.7.2.tar.gz;wait
 rm netcdf-c-4.7.2.tar.gz
 cd netcdf-c-4.7.2
 mkdir ../netcdf-c-4.7.2-intel20.2
@@ -87,7 +87,6 @@ wget ftp://ftp.unidata.ucar.edu/pub/netcdf/netcdf-fortran-4.5.2.tar.gz;wait
 tar -xzvf netcdf-fortran-4.5.2.tar.gz; wait
 rm netcdf-fortran-4.5.2.tar.gz
 cd netcdf-fortran-4.5.2
-
 mkdir ${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-intel20.2
 export NFDIR=${CMAQ_LIBRARIES}/netcdf-fortran-4.5.2-intel20.2
 export CPPFLAGS="${CPPFLAGS} -I${NCDIR}/include"
