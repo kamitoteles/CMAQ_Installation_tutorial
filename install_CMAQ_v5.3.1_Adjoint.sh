@@ -1,13 +1,15 @@
  #!/bin/bash
 # Editi files function
 edit_file() {
-    echo "Edit the $1 file"; echo .; sleep 1; echo .; sleep 1; echo .; sleep 1
+    echo -e '--------------------------------------------------------------------------------------------------------------\n'
+    echo "Edit the "$1" file"; echo .; sleep 1; echo .; sleep 1; echo .; sleep 1; echo .; sleep 1; echo .; sleep 1
     c=0
     while [ $c -le 1 ]
     do
         vim $1
         wait
-        read -p 'Did you edited the ${1} file correctly? ' correct
+        echo -e '--------------------------------------------------------------------------------------------------------------\n'
+        read -p 'Did you edited the '${1}' file correctly? ' correct
         if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
         then
             echo "Please edit the ${1}"
@@ -23,14 +25,14 @@ edit_file() {
 c=0
 while [ $c -le 1 ]
 do
-    export HOME_D=/hpcfs/home/ca.moreno12
-    export COMP_VARS=/hpcfs/home/ca.moreno12/intel/compilers_and_libraries/linux/bin/compilervars.sh
-    export MPI_VARS=/hpcfs/home/ca.moreno12/intel/compilers_and_libraries/linux/mpi/intel64/bin/mpivars.sh
-    export CC="/hpcfs/home/ca.moreno12/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpiicc"
-    export FC="/hpcfs/home/ca.moreno12/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpiifort"
-    export CXX="/hpcfs/home/ca.moreno12/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpiicpc"
-    export F77="/hpcfs/home/ca.moreno12/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpiifort"
-    export F90="/hpcfs/home/ca.moreno12/intel/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin/mpiifort"
+    read -p 'Enter the home directory ' HOME_D
+    read -p 'Enter the Intel compilervars.sh path ' COMP_VARS
+    read -p 'Enter the Intel mpivars.sh path '  MPI_VARS
+    read -p 'Enter the CC compiler path ' CC
+    read -p 'Enter the Fortran compiler path ' FC
+    read -p 'Enter the C++ compiler path ' CXX
+    export F77=${FC}
+    export F90=${FC}
 
     echo The home directory was set to: $HOME_D
     echo The CC location is set to: $CC
@@ -48,6 +50,7 @@ do
     echo -e "\n The LD_LIBRARY_PATH is \n"
     echo $LD_LIBRARY_PATH
 
+    echo -e '--------------------------------------------------------------------------------------------------------------\n'
     read -p 'Are those the correct locations? ' correct
 
     if [ $correct != 'Y' ] && [ $correct != 'y' ] && [ $correct != 'YES' ] && [ $correct != 'yes' ] && [ $correct != 'Yes' ]
@@ -214,7 +217,9 @@ edit_file bldit.pario
 
 # Adjoint
 eval $(ssh-agent)
-ssh-add ~/.ssh/id_rsa_adjoint
+echo -e '--------------------------------------------------------------------------------------------------------------\n'
+read -p 'Enter your ssh key path which is connected to the adjoint repository: ' SSHKEYADJ
+ssh-add ${SSHKEYADJ}
 
 git clone ssh://git@adjoint.colorado.edu/yanko.davila/cmaq_adj.git;wait
 git checkout -b test origin/gas
@@ -244,36 +249,4 @@ edit_file bldit.adjoint.bwd.intel
 cd ${CMAQ_ADJ_HOME}/BLD_bwd
 edit_file Makefile
 make |& tee make.bld.log;wait
-
-# Run Benchmark
-cd ${CMAQ_HOME}/data
-
-read -p 'Do you want to download the Benchmark Data for CMAQ? ' correct
-
-if [ $correct = 'Y' ] && [ $correct = 'y' ] && [ $correct = 'YES' ] && [ $correct = 'yes' ] && [ $correct = 'Yes' ]
-then
-    wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1m_v5BicazdxcDt23CRXxneqx5i6Y9AUD' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1m_v5BicazdxcDt23CRXxneqx5i6Y9AUD" -O CMAQv5.3.1_Benchmark_2Day_Input.tar.gz && rm -rf /tmp/cookies.txt;wait
-    wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1hIUfhyjaAbZ0TJh0RNbxXbTNSufVPPbU' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1hIUfhyjaAbZ0TJh0RNbxXbTNSufVPPbU" -O CMAQv5.3.1_Benchmark_2Day_Output.tar.gz && rm -rf /tmp/cookies.txt;wait
-
-    tar -xvzf CMAQv5.3.1_Benchmark_2Day_Input.tar.gz; wait
-    tar -xvzf CMAQv5.3.1_Benchmark_2Day_Output.tar.gz; wait
-
-else
-    echo Enter the location where the input benchmark data is: 
-    read Bench_data_inp
-    echo Enter the location where the output benchmark data is: 
-    read Bench_data_out
-
-    export BENCH_DATA_OUT=${Bench_data_out}
-    export BENCH_DATA_INP=${Bench_data_inp}
-
-    cp ${BENCH_DATA_INP} .;wait
-    cp ${BENCH_DATA_OUT} .;wait
-
-    tar -xvzf $(basename ${BENCH_DATA_INP});wait
-    tar -xvzf $(basename ${BENCH_DATA_OUT});wait
-fi
-
-edit_file run_cctm_Bench_2016_12SE1.csh
-./run_cctm_Bench_2016_12SE1.csh |& tee cctm.log; wait
 
